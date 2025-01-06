@@ -1,45 +1,44 @@
 import styles from "./styles.module.scss";
-import AuthInput from "../authInput/AuthInput";
+import { BeatLoader } from "react-spinners";
 import { Button } from "@/components/ui/button";
+import AuthInput from "../authInput/AuthInput";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useToast } from "@/hooks/use-toast";
-import "react-toastify/dist/ReactToastify.css";
-import BeatLoader from "react-spinners/BeatLoader";
-import { LoginData, LoginSchema } from "@/interface/Login";
-import { useNavigate } from "react-router-dom";
 import { useAuthStore } from "@/store/useAuthStore";
-import { useSignInMutation } from "@/service/mutations/signInMutations";
+import { useToast } from "@/hooks/use-toast";
+import { useNavigate } from "react-router-dom";
+import { RegisterData, RegisterSchema } from "@/interface/Register";
+import { useSignUpMutation } from "@/service/mutations/signUpMutation";
 
-const AuthForm = () => {
+const RegisterForm = () => {
   const { error } = useAuthStore();
   const { toast } = useToast();
   const navigate = useNavigate();
-  const signInMutation = useSignInMutation();
+  const signUpMutation = useSignUpMutation();
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<LoginData>({ resolver: yupResolver(LoginSchema) });
+  } = useForm<RegisterData>({ resolver: yupResolver(RegisterSchema) });
 
-  const onSubmit: SubmitHandler<LoginData> = (data) => {
-    signInMutation.mutate(data, {
+  const onSubmit: SubmitHandler<RegisterData> = (data) => {
+    signUpMutation.mutate(data, {
       onSuccess: () => {
         toast({
           variant: "default",
           duration: 3000,
-          title: "Sign in successfully",
-          description: "Have a nice day!",
+          title: "Sign up successfully",
+          description: "Please sign in with your newest account!",
           className: styles["toast-success"],
         });
-        navigate(`/label/overview`, { replace: true });
+        navigate(`/auth/sign-in`, { replace: true });
       },
 
       onError: () => {
         toast({
           variant: "destructive",
           duration: 3000,
-          title: error || "Invalid Credentials",
+          title: error || "Sign up failed!",
           description: "Please try again your username or password",
         });
       },
@@ -65,21 +64,37 @@ const AuthForm = () => {
         register={register}
         error={errors.password?.message}
       />
+      <AuthInput
+        label="Email"
+        id="email"
+        type="email"
+        placeholder="Enter your email"
+        register={register}
+        error={errors.email?.message}
+      />
+      <AuthInput
+        label="Name"
+        id="displayName"
+        type="text"
+        placeholder="Enter your name"
+        register={register}
+        error={errors.displayName?.message}
+      />
       <div className={styles["forgot-password"]}>
-        <span> Don't have account? </span>
-        <a href="/auth/sign-up" className={styles.link}>
-          Sign up now
+        <span> Already have an account? </span>
+        <a href="/auth/sign-in" className={styles.link}>
+          Sign in now
         </a>
       </div>
 
       <Button
         className={styles["submit-btn"]}
-        disabled={signInMutation.isPending}
+        disabled={signUpMutation.isPending}
       >
-        {signInMutation.isPending ? <BeatLoader color="#FFFFFF" /> : "Sign in"}
+        {signUpMutation.isPending ? <BeatLoader color="#FFFFFF" /> : "Sign up"}
       </Button>
     </form>
   );
 };
 
-export default AuthForm;
+export default RegisterForm;

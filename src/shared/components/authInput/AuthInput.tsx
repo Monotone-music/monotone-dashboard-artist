@@ -5,7 +5,7 @@ import { UseFormRegister } from 'react-hook-form';
 
 
 interface AuthInputProps {
-  showLabel: boolean;
+  showLabel?: boolean;
     label: string;
     id: string;
     type: string;

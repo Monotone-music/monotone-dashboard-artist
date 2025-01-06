@@ -6,7 +6,7 @@ import {
   Navigate,
   RouterProvider,
   useNavigate,
-} from "react-router-dom";
+} from "react-router-dom"; 
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import AuthPage from "./page/Auth/AuthPage";
@@ -19,36 +19,40 @@ import TrackManagerPage from "./page/TrackManager/TrackManagerPage";
 import ApplyLabel from "./page/ApplyLabel/ApplyLabel";
 import LabelStatus from "./page/LabelStatus/LabelStatus";
 import Profile from "./page/Profile/Profile";
+import Register from "./page/Register/Register";
 // import router from "./util/Router";
 
 const queryClient = new QueryClient({
   defaultOptions: { queries: { retry: 5, retryDelay: 1000 } },
 });
 
-// function NavigationWrapper({ children }: { children: React.ReactNode }) {
-//   const navigate = useNavigate();
+function NavigationWrapper({ children }: { children: React.ReactNode }) {
+  const navigate = useNavigate();
   
-//   useEffect(() => {
-//     setNavigate(navigate);
-//   }, [navigate]);
+  useEffect(() => {
+    setNavigate(navigate);
+  }, [navigate]);
 
-//   return <>{children}</>;
-// }
+  return <>{children}</>;
+}
 
 const router = createBrowserRouter([
   {
     path: "/",
-    // element: <Navigate to="/auth/sign-in" replace />,
-    element: <Navigate to="/;abel/overview" replace />,
+    element: <Navigate to="/auth/sign-in" replace />,
+    // element: <Navigate to="/artist/overview" replace />,
   },
-  // {
-  //   path: "/auth/sign-in",
-  //   element: <NavigationWrapper><AuthPage /></NavigationWrapper>,
-  // },
+  {
+    path: "/auth/sign-in",
+    element: <NavigationWrapper><AuthPage /></NavigationWrapper>,
+  },
+  {
+    path: "/auth/sign-up",
+    element: <NavigationWrapper><Register /></NavigationWrapper>,
+  },
   {
     path: "/artist",
-    // element: <NavigationWrapper><RootLayout /></NavigationWrapper>,
-    element: <RootLayout />,
+    element: <NavigationWrapper><RootLayout /></NavigationWrapper>,
     children: [
       { path: "overview", element: <HomePage /> },
       { path: "uploader", element: <UploaderPage/> },
