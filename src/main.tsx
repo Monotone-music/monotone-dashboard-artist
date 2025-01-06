@@ -16,38 +16,46 @@ import HomePage from "./page/Admin/Home/HomePage";
 import UploaderPage from "./page/Uploader/UploaderPage";
 import { setNavigate } from "./service/apiClient";
 import TrackManagerPage from "./page/TrackManager/TrackManagerPage";
+import ApplyLabel from "./page/ApplyLabel/ApplyLabel";
+import LabelStatus from "./page/LabelStatus/LabelStatus";
+import Profile from "./page/Profile/Profile";
 // import router from "./util/Router";
 
 const queryClient = new QueryClient({
   defaultOptions: { queries: { retry: 5, retryDelay: 1000 } },
 });
 
-function NavigationWrapper({ children }: { children: React.ReactNode }) {
-  const navigate = useNavigate();
+// function NavigationWrapper({ children }: { children: React.ReactNode }) {
+//   const navigate = useNavigate();
   
-  useEffect(() => {
-    setNavigate(navigate);
-  }, [navigate]);
+//   useEffect(() => {
+//     setNavigate(navigate);
+//   }, [navigate]);
 
-  return <>{children}</>;
-}
+//   return <>{children}</>;
+// }
 
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <Navigate to="/auth/sign-in" replace />,
+    // element: <Navigate to="/auth/sign-in" replace />,
+    element: <Navigate to="/;abel/overview" replace />,
   },
+  // {
+  //   path: "/auth/sign-in",
+  //   element: <NavigationWrapper><AuthPage /></NavigationWrapper>,
+  // },
   {
-    path: "/auth/sign-in",
-    element: <NavigationWrapper><AuthPage /></NavigationWrapper>,
-  },
-  {
-    path: "/label",
-    element: <NavigationWrapper><RootLayout /></NavigationWrapper>,
+    path: "/artist",
+    // element: <NavigationWrapper><RootLayout /></NavigationWrapper>,
+    element: <RootLayout />,
     children: [
       { path: "overview", element: <HomePage /> },
       { path: "uploader", element: <UploaderPage/> },
       { path: "manager", element: <TrackManagerPage/> },
+      { path: "apply-label", element: <ApplyLabel/> },
+      { path: "status-label", element: <LabelStatus/> },
+      { path: "profile", element: <Profile/> }
 
     ],
   },

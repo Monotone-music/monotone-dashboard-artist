@@ -5,6 +5,7 @@ import { UseFormRegister } from 'react-hook-form';
 
 
 interface AuthInputProps {
+  showLabel: boolean;
     label: string;
     id: string;
     type: string;
@@ -13,10 +14,11 @@ interface AuthInputProps {
     error?: string; // Error message passed from the parent component
 
 }
-const AuthInput:React.FC<AuthInputProps> = ({label,register, type, placeholder, id, error}) => {
+const AuthInput:React.FC<AuthInputProps> = ({showLabel = true,label,register, type, placeholder, id, error}) => {
   return (
     <div className={styles['input-container']}>
-    <label htmlFor={id} className={styles.label}>{label}</label>
+      {showLabel && (<label htmlFor={id} className={styles.label}>{label}</label>)}
+    
     <Input {...register(id)}  type={type} placeholder={placeholder} style={error ? {borderColor: 'red'} : undefined} className={styles['input-form']}/>
     {error && <p className={styles['error-text']}>{error}</p>}
   </div>

@@ -1,7 +1,8 @@
 import styles from "./styles.module.scss";
 import SideBtn from "./sideBtn/SideBtn";
 import { RiDashboardHorizontalFill } from "react-icons/ri";
-import { FaFileAudio, FaUser } from "react-icons/fa6";
+import { FaFileAudio, FaFileSignature, FaUser } from "react-icons/fa6";
+import { MdPendingActions } from "react-icons/md";
 import { FiLogOut } from "react-icons/fi";
 import LogoutButton from "../logoutButton/LogoutButton";
 
@@ -12,7 +13,7 @@ const SideMenu = () => {
         <div className={styles.logo}>
           <span>Monotone</span>
           <span>
-            Studio <span className={styles.role}>label</span>
+            Studio <span className={styles.role}>artist</span>
           </span>
         </div>
 
@@ -21,19 +22,37 @@ const SideMenu = () => {
             icon={RiDashboardHorizontalFill}
             iconHovered={RiDashboardHorizontalFill}
             title="Overview"
-            to="/label/overview"
+            to="/artist/overview"
           />
           <SideBtn
             icon={FaFileAudio}
             iconHovered={FaFileAudio}
             title="Upload"
-            to="/label/uploader"
+            to="/artist/uploader"
           />
-           <SideBtn
+           {/* <SideBtn
             icon={FaUser}
             iconHovered={FaUser}
             title="Track Manager"
-            to="/label/manager"
+            to="/artist/manager"
+          /> */}
+               <SideBtn
+            icon={FaFileSignature }
+            iconHovered={FaFileSignature}
+            title="Apply to Label"
+            to="/artist/apply-label"
+          />
+                <SideBtn
+            icon={MdPendingActions }
+            iconHovered={MdPendingActions}
+            title="Application Status"
+            to="/artist/status-label"
+          />
+                     <SideBtn
+            icon={FaUser }
+            iconHovered={FaUser}
+            title="Profile"
+            to="/artist/profile"
           />
         </div>
       </div>

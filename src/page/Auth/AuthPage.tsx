@@ -1,5 +1,5 @@
 import styles from "./styles.module.scss";
-import img from "../../assets/img/authPageImg2.jpg";
+import img from "../../assets/img/authPageImg3.jpg";
 import AuthForm from "@/shared/components/authForm/AuthForm";
 import AuthHeading from "@/shared/components/authHeading/AuthHeading";
 
@@ -10,7 +10,7 @@ const AuthPage = () => {
         <img src={img} alt="" />
       </div>
       <div className={styles["content-wrapper"]}>
-        <AuthHeading role="Label" />
+        <AuthHeading role="Artist" />
         <AuthForm />
       </div>
     </div>
