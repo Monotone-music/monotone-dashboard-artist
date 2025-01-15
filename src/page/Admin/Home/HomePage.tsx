@@ -9,26 +9,27 @@ import OverviewRankSong from "@/shared/components/overviewRankSong/OverviewRankS
 import { useEffect, useState } from "react";
 import { getLabelAnalytics } from "@/service/dashboardService";
 import PuffLoader from "react-spinners/PuffLoader";
+import { useAuthStore } from "@/store/useAuthStore";
 const HomePage = () => {
   const [data, setData] = useState<any>(null);
   const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const res = await getLabelAnalytics();
-        setData(res);
+  const {token} = useAuthStore()
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     try {
+  //       const res = await getLabelAnalytics();
+  //       setData(res);
         
-        // Handle the response here
-      } catch (error) {
-        console.log(error);
-      }
-    };
+  //       // Handle the response here
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   };
 
-    fetchData().then(() => {
-      setIsLoading(false);
-    });
-  }, []);
+  //   fetchData().then(() => {
+  //     setIsLoading(false);
+  //   });
+  // }, []);
 
   const totalTracks = data?.recordingCount.available || 0;
   const rejectedTracks = data?.recordingCount.reject || 0;
@@ -38,7 +39,7 @@ const HomePage = () => {
   return (
     <div className={styles.container}>
       <TitlePage title={["Overview", "Dashboard"]} />
-
+{/* 
       <section className={styles["analytic-section"]}>
       {isLoading ? (
           Array(4).fill(null).map((_, index) => (
@@ -91,7 +92,7 @@ const HomePage = () => {
           <TitlePage title={["Top Songs"]} />
           <OverviewRankSong />
         </div>
-      </section>
+      </section> */}
     </div>
   );
 };

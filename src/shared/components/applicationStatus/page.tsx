@@ -31,26 +31,20 @@ async function getData(): Promise<Application[]> {
   ];
 }
 
-const TableData = () => {
-    const [data, setData] = useState<Application[]>([]);
-    const [loading, setLoading] = useState(true);
+interface TableDataProps {
+  data: any[];
+  isLoading: boolean;
+}
+
+const TableData:React.FC<TableDataProps> = ({data, isLoading}) => {
+  console.log(data)
   
-    useEffect(() => {
-      const fetchData = async () => {
-        const result = await getData();
-        setData(result);
-        setLoading(false);
-      };
+
   
-      fetchData();
-    }, []);
-  
-    if (loading) {
-      return <div>Loading...</div>;
-    }
+    if (isLoading) return <div>Loading...</div>;
   
     return (
-      <div className="container mx-auto py-10">
+      <div className="container mx-auto">
         <DataTable columns={columns} data={data} />
       </div>
     );

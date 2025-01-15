@@ -42,48 +42,48 @@ apiClient.interceptors.request.use(
     }
 );
 
-// apiClient.interceptors.response.use(
-//     (response) => response,
-//     async (error) => {
-//         const originalRequest = error.config;
-//         // let refreshToken = localStorage.getItem('refreshToken');
-//         if (error.response.status === 401 && !originalRequest._retry) {
-//             if (!isRefreshing) {
-//                 isRefreshing = true;
-//                 originalRequest._retry = true;
-//                 try {
-//                     const data = await refreshTokenApi2();
-//                     localStorage.setItem('token', data.accessToken);
-//                     localStorage.setItem('refreshToken', data.refreshToken);
-//                     apiClient.defaults.headers.common['Authorization'] = `Bearer ${data.accessToken}`;
-//                     isRefreshing = false;
-//                     onRrefreshed(data.accessToken);
-//                     return apiClient(originalRequest);
-//                 } catch (refreshError) {
-//                     const navigate = useNavigate();
-//                     navigate('/auth/sign-in', { replace: true });
-//                     return Promise.reject(refreshError);
-//                 }
-//             } else {
-//                 console.log('Waiting for refresh token');
-//                 toast({
-//                     variant: "destructive",
-//                     duration: 3000,
-//                     title: "Your login session has expired.",
-//                     description: "Please log in again.",
-//                     className: 'bg-red-500 text-white',
-//                   });
-//                 navigate('/auth/sign-in');
-//                 return new Promise((resolve) => {
-//                     addRefreshSubscriber((token: string) => {
-//                         originalRequest.headers['Authorization'] = `Bearer ${token}`;
-//                         resolve(apiClient(originalRequest));
-//                     });
-//                 });
-//             }
-//         }
-//         return Promise.reject(error);
-//     }
-// );
+apiClient.interceptors.response.use(
+    (response) => response,
+    async (error) => {
+        const originalRequest = error.config;
+        // let refreshToken = localStorage.getItem('refreshToken');
+        if (error.response.status === 401 && !originalRequest._retry) {
+            if (!isRefreshing) {
+                isRefreshing = true;
+                originalRequest._retry = true;
+                try {
+                    const data = await refreshTokenApi2();
+                    localStorage.setItem('token', data.accessToken);
+                    localStorage.setItem('refreshToken', data.refreshToken);
+                    apiClient.defaults.headers.common['Authorization'] = `Bearer ${data.accessToken}`;
+                    isRefreshing = false;
+                    onRrefreshed(data.accessToken);
+                    return apiClient(originalRequest);
+                } catch (refreshError) {
+                    const navigate = useNavigate();
+                    navigate('/auth/sign-in', { replace: true });
+                    return Promise.reject(refreshError);
+                }
+            } else {
+                console.log('Waiting for refresh token');
+                toast({
+                    variant: "destructive",
+                    duration: 3000,
+                    title: "Your login session has expired.",
+                    description: "Please log in again.",
+                    className: 'bg-red-500 text-white',
+                  });
+                navigate('/auth/sign-in');
+                return new Promise((resolve) => {
+                    addRefreshSubscriber((token: string) => {
+                        originalRequest.headers['Authorization'] = `Bearer ${token}`;
+                        resolve(apiClient(originalRequest));
+                    });
+                });
+            }
+        }
+        return Promise.reject(error);
+    }
+);
 
 export default apiClient;

@@ -4,16 +4,16 @@ export type Application = {
   id: string;
   email: string;
   labelName: string;
-  status: "pending" | "processing" | "success" | "failed";
+  status: "pending" | "rejected" | "approved" ;
 };
 
 export const columns: ColumnDef<Application>[] = [
     {
-      accessorKey: "labelName",
+      accessorKey: "labelId.displayName",
       header: "Label Name",
     },
     {
-      accessorKey: "email",
+      accessorKey: "labelId.email",
       header: "Email",
     },
     {
@@ -25,15 +25,12 @@ export const columns: ColumnDef<Application>[] = [
   
         switch (status) {
           case "pending":
-            badgeColor = "bg-yellow-100 text-yellow-800";
-            break;
-          case "processing":
             badgeColor = "bg-blue-100 text-blue-800";
             break;
-          case "success":
+          case "approved":
             badgeColor = "bg-green-100 text-green-800";
             break;
-          case "failed":
+          case "rejected":
             badgeColor = "bg-red-100 text-red-800";
             break;
           default:
