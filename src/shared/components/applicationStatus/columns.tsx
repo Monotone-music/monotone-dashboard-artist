@@ -4,7 +4,7 @@ export type Application = {
   id: string;
   email: string;
   labelName: string;
-  status: "pending" | "rejected" | "approved" ;
+  status: "pending" | "rejected" | "approved" | "noticed";
 };
 
 export const columns: ColumnDef<Application>[] = [
@@ -27,6 +27,9 @@ export const columns: ColumnDef<Application>[] = [
           case "pending":
             badgeColor = "bg-blue-100 text-blue-800";
             break;
+            case "noticed":
+              badgeColor = "bg-zinc-100 text-zinc-800";
+              break;
           case "approved":
             badgeColor = "bg-green-100 text-green-800";
             break;

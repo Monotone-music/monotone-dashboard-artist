@@ -2,12 +2,17 @@ import React from 'react'
 import styles from './styles.module.scss'
 import { FaRegBuilding } from 'react-icons/fa6'
 
-const LaBelBelongContainer = () => {
+interface LaBelBelongContainerProps {
+    dataInfo: any;
+}
+
+
+const LaBelBelongContainer:React.FC<LaBelBelongContainerProps> = ({dataInfo}) => {
   return (
     <div className={styles.container}>
         <div className={styles.top}>
         <div className={styles.title}>
-            Sony Entertainment Company
+            {dataInfo?.labelId.displayName === "defaultlabel" ? "Independant" : dataInfo?.labelId.displayName}
         </div>
 
         <div className={styles.icon}>

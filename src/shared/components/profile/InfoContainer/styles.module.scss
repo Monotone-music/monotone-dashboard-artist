@@ -1,5 +1,5 @@
 .container{
-    width: 300px;
+    width: 350px;
     height: auto;
     max-height: 600px;
     border-radius: 10px;
@@ -54,11 +54,12 @@
 .label{
     font-weight: 600;
     font-size: 14px;
-    width: 50%;
+    width: 30%;
     color: gray;
 }
 
 .info{
     width: 50%;
+    flex: 1;
     text-align: right;
 }

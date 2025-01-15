@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { useAuthStore } from "@/store/useAuthStore";
 import { getRequestLabel } from "@/service/labelService";
 
-export const useLabelRequests = (status: 'pending' | 'approved' | 'rejected') => {
+export const useLabelRequests = (status: 'pending' | 'approved' | 'rejected' | 'noticed') => {
   const { token } = useAuthStore();
 
   return useQuery({

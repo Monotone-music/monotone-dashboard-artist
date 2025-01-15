@@ -10,6 +10,7 @@ import { useLabelRequests } from "@/hooks/useLabelRequests";
 
 const LabelStatus = () => {
   const pendingRequests = useLabelRequests('pending');
+  const noticedRequests = useLabelRequests('noticed');
   const approvedRequests = useLabelRequests('approved');
   const rejectedRequests = useLabelRequests('rejected');
 
@@ -18,8 +19,9 @@ const LabelStatus = () => {
       <div className={styles.title}>Application Status</div>
       <div className={styles['table-wrapper']}>
         <Tabs defaultValue="pending" className="w-[100%] mt-10">
-          <TabsList className="grid grid-cols-3 my-10 w-[500px]" >
+          <TabsList className="grid grid-cols-4 my-10 w-[500px]" >
             <TabsTrigger value="pending">Pending</TabsTrigger>
+            <TabsTrigger value="noticed">Noticed</TabsTrigger>
             <TabsTrigger value="approve">Approve</TabsTrigger>
             <TabsTrigger value="reject">Reject</TabsTrigger>
           </TabsList>
@@ -27,6 +29,12 @@ const LabelStatus = () => {
             <TableData 
               data={pendingRequests.data} 
               isLoading={pendingRequests.isLoading} 
+            />
+          </TabsContent>
+          <TabsContent value="noticed">
+            <TableData 
+              data={noticedRequests.data} 
+              isLoading={noticedRequests.isLoading} 
             />
           </TabsContent>
           <TabsContent value="approve">

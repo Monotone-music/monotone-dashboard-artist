@@ -2,7 +2,11 @@ import React from 'react'
 import styles from './styles.module.scss'
 import profileImg from '../../../../assets/img/profile.jpg'
 
-const InfoContainer = () => {
+interface InfoContainerProps {
+    dataInfo: any;
+}
+
+const InfoContainer:React.FC<InfoContainerProps> = ({dataInfo}) => {
   return (
     <div className={styles.container}>
         <div className={styles['img-wrapper']}>
@@ -15,7 +19,7 @@ const InfoContainer = () => {
                 </div>
 
                 <div className={styles.info}>
-                    Nguyen Huynh Minh Khoi
+                    {dataInfo.name}
                 </div>
             </div>
             <div className={styles['row']}>
@@ -24,16 +28,7 @@ const InfoContainer = () => {
                 </div>
 
                 <div className={styles.info}>
-                    test@example.com
-                </div>
-            </div>
-            <div className={styles['row']}>
-                <div className={styles.label}>
-                    Status
-                </div>
-
-                <div className={styles.info}>
-                    Activated
+                {dataInfo.account.email}
                 </div>
             </div>
         </div>
