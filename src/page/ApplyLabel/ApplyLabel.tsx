@@ -25,7 +25,6 @@ const ApplyLabel = () => {
   const {
     data: labelData,
     isLoading,
-    isError,
   } = useQuery({
     queryKey: ["labelCard", token],
     queryFn: () => getAllLabel(token!),

@@ -1,33 +1,43 @@
 import apiClient from "./apiClient";
 
+export interface Artist {
+  _id: string;
+  name: string;
+}
+
 export interface Track {
   _id: string;
   title: string;
   view: number;
-  artist: string;
-  status: string;
-  media: {
-    fingerprint: {
-      duration: number;
-    };
+  displayedArtist: string;
+  available: string;
+  duration: number;
+  artist: Artist[];
+  position: {
+    no: number;
+    of: number;
   };
-  image: {
-    filename: string;
-  };
+  image: string;
+  media: string;
 }
 
 export const getAvailableTracks = async (): Promise<Track[]> => {
-  const response = await apiClient.get('/label/available');
+  const response = await apiClient.get('/artist/recording/available');
   return response.data.data;
 };
 
 export const getPendingTracks = async (): Promise<Track[]> => {
-  const response = await apiClient.get('/label/pending');
+  const response = await apiClient.get('/artist/recording/pending');
+  return response.data.data;
+};
+
+export const getQueuedTracks = async (): Promise<Track[]> => {
+  const response = await apiClient.get('/artist/recording/queued');
   return response.data.data;
 };
 
 export const getRejectedTracks = async (): Promise<Track[]> => {
-  const response = await apiClient.get('/label/rejected');
+  const response = await apiClient.get('/artist/recording/rejected');
   return response.data.data;
 };
 

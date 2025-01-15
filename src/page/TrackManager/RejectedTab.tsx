@@ -1,21 +1,8 @@
 import { useEffect, useState } from "react";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { useToast } from "@/hooks/use-toast";
-import { getRejectedTracks } from "@/service/managerService";
+import { getRejectedTracks, Track } from "@/service/managerService";
 import { PuffLoader } from "react-spinners";
-
-interface Track {
-  _id: string;
-  title: string;
-  artist: string;
-  view: number;
-  status: string;
-  media: {
-    fingerprint: {
-      duration: number;
-    };
-  };
-}
 
 const RejectedTracks = () => {
   const [tracks, setTracks] = useState<Track[]>([]);
@@ -64,12 +51,12 @@ const RejectedTracks = () => {
             {tracks.map((track) => (
               <TableRow key={track._id}>
                 <TableCell className="font-medium">{track.title}</TableCell>
-                <TableCell>{track.artist}</TableCell>
+                <TableCell>{track.displayedArtist}</TableCell>
                 <TableCell>
-                  {Math.floor(track.media.fingerprint.duration / 60)}:
-                  {Math.floor(track.media.fingerprint.duration % 60).toString().padStart(2, '0')}
+                  {Math.floor(track.duration / 60)}:
+                  {Math.floor(track.duration % 60).toString().padStart(2, '0')}
                 </TableCell>
-                <TableCell className="capitalize text-red-500">{track.status}</TableCell>
+                <TableCell className="capitalize text-red-500">{track.available}</TableCell>
               </TableRow>
             ))}
           </TableBody>

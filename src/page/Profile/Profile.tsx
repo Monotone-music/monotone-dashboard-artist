@@ -10,7 +10,7 @@ import { PuffLoader } from "react-spinners";
 
 const Profile = () => {
   const {token} = useAuthStore()
-  const {data, isLoading, isError} = useQuery({
+  const {data, isLoading} = useQuery({
     queryKey: ['profile', token],
     queryFn :() => getArtistProfile(token!)
   })

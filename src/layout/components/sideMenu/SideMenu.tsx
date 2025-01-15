@@ -30,12 +30,12 @@ const SideMenu = () => {
             title="Upload"
             to="/artist/uploader"
           />
-           {/* <SideBtn
+           <SideBtn
             icon={FaUser}
             iconHovered={FaUser}
             title="Track Manager"
             to="/artist/manager"
-          /> */}
+          />
                <SideBtn
             icon={FaFileSignature }
             iconHovered={FaFileSignature}

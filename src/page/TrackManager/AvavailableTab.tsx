@@ -43,7 +43,7 @@ const AvailableTracks = () => {
 
   useEffect(() => {
     const fetchTracks = async () => {
-    setIsLoading(true);
+      setIsLoading(true);
       try {
         const data = await getAvailableTracks();
         setTracks(data);
@@ -72,7 +72,7 @@ const AvailableTracks = () => {
           track._id === trackId
             ? {
                 ...track,
-                status: track.status === "available" ? "disabled" : "available",
+                available: track.available === "available" ? "disabled" : "available",
               }
             : track
         )
@@ -81,7 +81,7 @@ const AvailableTracks = () => {
       toast({
         title: "Track status updated",
         description: `Track has been ${
-          updatedTrack?.status === "available" ? "disabled" : "enabled"
+          updatedTrack?.available === "available" ? "disabled" : "enabled"
         }`,
         className: "bg-green-500 text-white",
       });
@@ -97,78 +97,77 @@ const AvailableTracks = () => {
       setUpdatingId(null);
     }
   };
+
   return (
     <div className="h-[500px] overflow-auto relative">
-                {isLoading ? (
-          <div className="absolute inset-0 flex items-center justify-center">
-            <PuffLoader color="#36d7b7" size={60} />
-          </div>
-        ) : (
-            <>
-      <Table>
-        <TableHeader>
-          <TableRow>
-            <TableHead>Title</TableHead>
-            <TableHead>Artist</TableHead>
-            <TableHead>Duration</TableHead>
-            <TableHead>Views</TableHead>
-            <TableHead className="text-right">Status</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {currentTracks.map((track) => (
-            <TableRow key={track._id}>
-              <TableCell className="font-medium">{track.title}</TableCell>
-              <TableCell>{track.artist}</TableCell>
-              <TableCell>
-                {Math.floor(track.media.fingerprint.duration / 60)}:
-                {Math.floor(track.media.fingerprint.duration % 60)
-                  .toString()
-                  .padStart(2, "0")}
-              </TableCell>
-              <TableCell>{track.view.toLocaleString()}</TableCell>
-              <TableCell className="text-right">
-                <Switch
-                  checked={track.status === "available"}
-                  onCheckedChange={() => handleStatusToggle(track._id)}
-                  className="data-[state=checked]:bg-green-500"
-                  disabled={updatingId === track._id}
+      {isLoading ? (
+        <div className="absolute inset-0 flex items-center justify-center">
+          <PuffLoader color="#36d7b7" size={60} />
+        </div>
+      ) : (
+        <>
+          <Table>
+            <TableHeader>
+              <TableRow>
+                <TableHead>Title</TableHead>
+                <TableHead>Artist</TableHead>
+                <TableHead>Duration</TableHead>
+                <TableHead>Views</TableHead>
+                <TableHead className="text-right">Status</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {currentTracks.map((track) => (
+                <TableRow key={track._id}>
+                  <TableCell className="font-medium">{track.title}</TableCell>
+                  <TableCell>{track.displayedArtist}</TableCell>
+                  <TableCell>
+                    {Math.floor(track.duration / 60)}:
+                    {Math.floor(track.duration % 60).toString().padStart(2, "0")}
+                  </TableCell>
+                  <TableCell>{track.view.toLocaleString()}</TableCell>
+                  <TableCell className="text-right">
+                    <Switch
+                      checked={track.available === "available"}
+                      onCheckedChange={() => handleStatusToggle(track._id)}
+                      className="data-[state=checked]:bg-green-500"
+                      disabled={updatingId === track._id}
+                    />
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+          <Pagination className="mt-4">
+            <PaginationContent>
+              <PaginationItem>
+                <PaginationPrevious
+                  className={
+                    currentPage === 1
+                      ? "pointer-events-none opacity-50"
+                      : "cursor-pointer"
+                  }
+                  onClick={() => handlePagination(currentPage - 1)}
                 />
-              </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-      <Pagination className="mt-4">
-        <PaginationContent>
-          <PaginationItem>
-            <PaginationPrevious
-              className={
-                currentPage === 1
-                  ? "pointer-events-none opacity-50"
-                  : "cursor-pointer"
-              }
-              onClick={() => handlePagination(currentPage - 1)}
-            />
-          </PaginationItem>
-          <PaginationItem>
-            <span>
-              Page {currentPage} of {totalPages}
-            </span>
-          </PaginationItem>
-          <PaginationItem>
-            <PaginationNext
-              className={
-                currentPage >= totalPages
-                  ? "pointer-events-none opacity-50"
-                  : "cursor-pointer"
-              }
-              onClick={() => handlePagination(currentPage + 1)}
-            />
-          </PaginationItem>
-        </PaginationContent>
-      </Pagination>
-      </>
+              </PaginationItem>
+              <PaginationItem>
+                <span>
+                  Page {currentPage} of {totalPages}
+                </span>
+              </PaginationItem>
+              <PaginationItem>
+                <PaginationNext
+                  className={
+                    currentPage >= totalPages
+                      ? "pointer-events-none opacity-50"
+                      : "cursor-pointer"
+                  }
+                  onClick={() => handlePagination(currentPage + 1)}
+                />
+              </PaginationItem>
+            </PaginationContent>
+          </Pagination>
+        </>
       )}
     </div>
   );

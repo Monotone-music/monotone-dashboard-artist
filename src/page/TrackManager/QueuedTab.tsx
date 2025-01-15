@@ -1,11 +1,10 @@
 import { useEffect, useState } from "react";
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
-import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
-import { getPendingTracks, cancelPendingTrack, Track } from "@/service/managerService";
+import { getQueuedTracks, Track } from "@/service/managerService";
 import { PuffLoader } from "react-spinners";
 
-const PendingTracks = () => {
+const QueuedTracks = () => {
   const [tracks, setTracks] = useState<Track[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const { toast } = useToast();
@@ -14,7 +13,7 @@ const PendingTracks = () => {
     const fetchTracks = async () => {
       setIsLoading(true);
       try {
-        const data = await getPendingTracks();
+        const data = await getQueuedTracks();
         setTracks(data);
       } catch (error) {
         console.error("Failed to fetch tracks:", error);
@@ -32,25 +31,6 @@ const PendingTracks = () => {
     fetchTracks();
   }, []);
 
-  const handleCancelPending = async (trackId: string) => {
-    try {
-      await cancelPendingTrack(trackId);
-      setTracks(tracks.filter(track => track._id !== trackId));
-      toast({
-        title: "Request cancelled",
-        description: "Track request has been cancelled",
-      });
-    } catch (error) {
-      console.error("Failed to cancel request:", error);
-      toast({
-        variant: "destructive",
-        title: "Failed to cancel request",
-        description: "Please try again later",
-        className: "bg-red-500 text-white",
-      });
-    }
-  };
-
   return (
     <div className="h-[500px] overflow-auto scrollbar-hide relative">
       {isLoading ? (
@@ -64,7 +44,7 @@ const PendingTracks = () => {
               <TableHead>Title</TableHead>
               <TableHead>Artist</TableHead>
               <TableHead>Duration</TableHead>
-              <TableHead className="text-right">Actions</TableHead>
+              <TableHead>Status</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -76,14 +56,7 @@ const PendingTracks = () => {
                   {Math.floor(track.duration / 60)}:
                   {Math.floor(track.duration % 60).toString().padStart(2, '0')}
                 </TableCell>
-                <TableCell className="text-right">
-                  <Button 
-                    variant="destructive" 
-                    onClick={() => handleCancelPending(track._id)}
-                  >
-                    Cancel Request
-                  </Button>
-                </TableCell>
+                <TableCell className="capitalize text-yellow-500">{track.available}</TableCell>
               </TableRow>
             ))}
           </TableBody>
@@ -93,4 +66,4 @@ const PendingTracks = () => {
   );
 };
 
-export default PendingTracks;
+export default QueuedTracks;
