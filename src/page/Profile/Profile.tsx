@@ -15,7 +15,7 @@ const Profile = () => {
     queryFn :() => getArtistProfile(token!)
   })
 
-console.log(data)
+
   if(isLoading){
     return (
       <div className={styles['loading-container']}>

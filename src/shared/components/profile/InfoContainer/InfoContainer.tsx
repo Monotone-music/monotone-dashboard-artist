@@ -1,16 +1,26 @@
 import React from 'react'
 import styles from './styles.module.scss'
-import profileImg from '../../../../assets/img/profile.jpg'
+import { useQuery } from '@tanstack/react-query';
+import { getPrfileFileName } from '@/service/profileService';
+import { useAuthStore } from '@/store/useAuthStore';
+import { PuffLoader } from 'react-spinners';
 
 interface InfoContainerProps {
     dataInfo: any;
 }
 
 const InfoContainer:React.FC<InfoContainerProps> = ({dataInfo}) => {
+    const {token} = useAuthStore()
+    const {data, isLoading, isError} = useQuery({
+        queryKey: ['profile', token, dataInfo.image.filename],
+        queryFn :() => getPrfileFileName(dataInfo.image.filename, token!)
+      })
+    
   return (
     <div className={styles.container}>
         <div className={styles['img-wrapper']}>
-            <img src={profileImg} alt="" />
+            {isLoading ? <PuffLoader/> :   <img src={data} alt="" />}
+          
         </div>
         <div className={styles['info-container']}>
             <div className={styles['row']}>

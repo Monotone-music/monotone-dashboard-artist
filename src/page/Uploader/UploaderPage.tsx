@@ -6,6 +6,7 @@ import { cn } from "@/lib/utils";
 // import axios from 'axios';
 import apiClient from "@/service/apiClient";
 import { useToast } from "@/hooks/use-toast";
+import { useAuthStore } from "@/store/useAuthStore";
 
 const UploaderPage: React.FC = () => {
   const [file, setFile] = useState<File | null>(null);
@@ -18,7 +19,7 @@ const UploaderPage: React.FC = () => {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const { toast } = useToast();
   const [isUploading, setIsUploading] = useState(false);
-
+  const {token} = useAuthStore()
   const handleFileChange = async (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
@@ -82,8 +83,9 @@ const UploaderPage: React.FC = () => {
       });
 
       await apiClient
-        .put("/tracks/parse", formData, {
+        .put("/tracks/parse?flag=artist", formData, {
           headers: {
+            Authorization: `Bearer ${token}`,
             "Content-Type": "multipart/form-data;",
           },
         })
