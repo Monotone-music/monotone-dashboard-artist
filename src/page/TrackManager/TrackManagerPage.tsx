@@ -9,7 +9,7 @@ const TrackManagerPage = () => {
     <div className="container mx-auto p-6">
       <h1 className="text-2xl font-bold mb-6">Track Status Manager</h1>
 
-      <Tabs defaultValue="available">
+      <Tabs defaultValue="queued">
         <TabsList className="mb-4">
           <TabsTrigger value="queued">Queued</TabsTrigger>
           <TabsTrigger value="pending">Pending</TabsTrigger>

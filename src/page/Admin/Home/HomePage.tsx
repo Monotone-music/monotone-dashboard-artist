@@ -2,84 +2,79 @@ import styles from "./styles.module.scss";
 import TitlePage from "@/shared/components/titlePage/TitlePage";
 import AnalyticCard from "@/shared/components/analyticCard/AnalyticCard";
 import { IoEye } from "react-icons/io5";
-import { AiOutlineCheckCircle } from "react-icons/ai";
-import { FaMusic, FaRegUser } from "react-icons/fa6";
+import { FaDollarSign, FaMusic, FaRegUser } from "react-icons/fa6";
+import { useEffect, useState } from "react";
+import { DashboardStats, getArtistAnalytics } from "@/service/dashboardService";
+import PuffLoader from "react-spinners/PuffLoader";
 import { OverviewChart } from "@/shared/components/overviewChart/OverviewChart";
 import OverviewRankSong from "@/shared/components/overviewRankSong/OverviewRankSong";
-import { useEffect, useState } from "react";
-import { getLabelAnalytics } from "@/service/dashboardService";
-import PuffLoader from "react-spinners/PuffLoader";
-import { useAuthStore } from "@/store/useAuthStore";
 const HomePage = () => {
-  const [data, setData] = useState<any>(null);
+  const [data, setData] = useState<DashboardStats | null>(null);
   const [isLoading, setIsLoading] = useState(true);
-  const {token} = useAuthStore()
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       const res = await getLabelAnalytics();
-  //       setData(res);
-        
-  //       // Handle the response here
-  //     } catch (error) {
-  //       console.log(error);
-  //     }
-  //   };
+  useEffect(() => {
+    const fetchData = async () => {
+      setIsLoading(true);
+      try {
+        const response = await getArtistAnalytics();
+        setData(response);
+      } catch (error) {
+        console.error("Failed to fetch analytics:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    };
 
-  //   fetchData().then(() => {
-  //     setIsLoading(false);
-  //   });
-  // }, []);
-
-  const totalTracks = data?.recordingCount.available || 0;
-  const rejectedTracks = data?.recordingCount.reject || 0;
-  const pendingTracks = data?.recordingCount.pending || 0;
-  const totalViews = data?.totalViews || 0;
+    fetchData();
+  }, []);
 
   return (
     <div className={styles.container}>
       <TitlePage title={["Overview", "Dashboard"]} />
-{/* 
       <section className={styles["analytic-section"]}>
-      {isLoading ? (
-          Array(4).fill(null).map((_, index) => (
-            <div key={index} className="p-6 rounded-lg shadow-md">
-              <PuffLoader size={40} />
-            </div>
-          ))
+        {isLoading ? (
+          Array(3)
+            .fill(null)
+            .map((_, index) => (
+              <div key={index} className="p-6 rounded-lg shadow-md">
+                <PuffLoader size={40} />
+              </div>
+            ))
         ) : (
           <>
-        <AnalyticCard
-          iconColor="#4CAF50"
-          icon={FaMusic}
-          title="Total Tracks"
-          mainNumber={totalTracks}
-          unit="Track(s)"
-        />
-        <AnalyticCard
-          iconColor="#2196F3"
-          icon={IoEye}
-          title="Total Views"
-          mainNumber={totalViews}
-          unit="View(s)"
-        />
-
-        <AnalyticCard
-          iconColor="#FFC107"
-          icon={FaRegUser}
-          title="Rejected Requests"
-          mainNumber={rejectedTracks}
-          unit="Request(s)"
-        />
-        <AnalyticCard
-          iconColor="#673AB7"
-          icon={AiOutlineCheckCircle}
-          title="Pending Requests"
-          mainNumber={pendingTracks}
-          unit="Request(s)"
-        />
-        </>
-      )}
+            <AnalyticCard
+              iconColor="#4CAF50"
+              icon={FaMusic}
+              title="Total Recordings"
+              mainNumber={data?.totalRecordings || 0}
+              unit="Track(s)"
+            />
+            <AnalyticCard
+              iconColor="#2196F3"
+              icon={IoEye}
+              title="Total Views"
+              mainNumber={data?.totalViews || 0}
+              unit="View(s)"
+            />
+            <AnalyticCard
+              iconColor="#673AB7"
+              icon={FaDollarSign}
+              title="Estimated Earnings"
+              mainNumber={data?.estimatedEarnings?.toFixed(2) || 0}
+              unit=""
+            />
+            <AnalyticCard
+              iconColor="#FFC107"
+              icon={FaRegUser}
+              title="Label"
+              mainNumber={
+                data?.label === "defaultlabel"
+                  ? "No Label"
+                  : data?.label || "N/A"
+              }
+              unit=""
+            />
+          </>
+        )}
       </section>
 
       <section className={styles["metrics-section"]}>
@@ -92,9 +87,8 @@ const HomePage = () => {
           <TitlePage title={["Top Songs"]} />
           <OverviewRankSong />
         </div>
-      </section> */}
+      </section>
     </div>
   );
 };
-
 export default HomePage;

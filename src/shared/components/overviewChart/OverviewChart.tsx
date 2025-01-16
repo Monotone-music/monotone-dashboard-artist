@@ -1,16 +1,14 @@
 import { Bar, BarChart, CartesianGrid, XAxis, YAxis } from "recharts"
 import { ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart"
 import { useEffect, useState } from "react"
-import { formatChartData, getCharts, ViewData } from "@/service/dashboardService"
+import { ViewData, getCharts } from "@/service/dashboardService"
 
 const chartConfig = {
-  desktop: {
+  views: {
     label: "Views",
     color: "#4CAF50",
   }
 } satisfies ChartConfig
-
-
 
 export function OverviewChart() {
   const [chartData, setChartData] = useState<ViewData[]>([]);
@@ -18,7 +16,7 @@ export function OverviewChart() {
   useEffect(() => {
     const fetchData = async () => {
       const data = await getCharts();
-      setChartData(formatChartData(data));
+      setChartData(data);
     };
     
     fetchData();
@@ -36,12 +34,12 @@ export function OverviewChart() {
           axisLine={false}
         />
         <YAxis
-          dataKey="desktop"
+          dataKey="views"
           tickLine={false}
           tickMargin={10}
           axisLine={false}
         />
-        <Bar dataKey="desktop" fill="var(--color-desktop)" radius={4} />
+        <Bar dataKey="views" fill="var(--color-views)" radius={4} />
       </BarChart>
     </ChartContainer>
   )

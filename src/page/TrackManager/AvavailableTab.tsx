@@ -7,12 +7,10 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Switch } from "@/components/ui/switch";
 import { useToast } from "@/hooks/use-toast";
 import {
   getAvailableTracks,
   Track,
-  updateTrackStatus,
 } from "@/service/managerService";
 import {
   Pagination,
@@ -30,7 +28,6 @@ const AvailableTracks = () => {
   const [tracks, setTracks] = useState<Track[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const { toast } = useToast();
-  const [updatingId, setUpdatingId] = useState<string | null>(null);
 
   const totalPages = Math.ceil(tracks.length / ITEMS_PER_PAGE);
   const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
@@ -63,46 +60,17 @@ const AvailableTracks = () => {
     fetchTracks();
   }, []);
 
-  const handleStatusToggle = async (trackId: string) => {
-    setUpdatingId(trackId);
-    try {
-      await updateTrackStatus(trackId);
-      setTracks(
-        tracks.map((track) =>
-          track._id === trackId
-            ? {
-                ...track,
-                available: track.available === "available" ? "disabled" : "available",
-              }
-            : track
-        )
-      );
-      const updatedTrack = tracks.find((track) => track._id === trackId);
-      toast({
-        title: "Track status updated",
-        description: `Track has been ${
-          updatedTrack?.available === "available" ? "disabled" : "enabled"
-        }`,
-        className: "bg-green-500 text-white",
-      });
-    } catch (error) {
-      console.error("Failed to update status:", error);
-      toast({
-        variant: "destructive",
-        title: "Failed to update status",
-        description: "Please try again later",
-        className: "bg-red-500 text-white",
-      });
-    } finally {
-      setUpdatingId(null);
-    }
-  };
+
 
   return (
     <div className="h-[500px] overflow-auto relative">
       {isLoading ? (
         <div className="absolute inset-0 flex items-center justify-center">
           <PuffLoader color="#36d7b7" size={60} />
+        </div>
+      ) : tracks.length === 0 ? (
+        <div className="absolute inset-0 flex items-center justify-center text-gray-500">
+          No available tracks found
         </div>
       ) : (
         <>
@@ -113,7 +81,7 @@ const AvailableTracks = () => {
                 <TableHead>Artist</TableHead>
                 <TableHead>Duration</TableHead>
                 <TableHead>Views</TableHead>
-                <TableHead className="text-right">Status</TableHead>
+                <TableHead>Status</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
@@ -126,14 +94,7 @@ const AvailableTracks = () => {
                     {Math.floor(track.duration % 60).toString().padStart(2, "0")}
                   </TableCell>
                   <TableCell>{track.view.toLocaleString()}</TableCell>
-                  <TableCell className="text-right">
-                    <Switch
-                      checked={track.available === "available"}
-                      onCheckedChange={() => handleStatusToggle(track._id)}
-                      className="data-[state=checked]:bg-green-500"
-                      disabled={updatingId === track._id}
-                    />
-                  </TableCell>
+                  <TableCell className="capitalize text-green-500">{track.available}</TableCell>
                 </TableRow>
               ))}
             </TableBody>

@@ -2,7 +2,6 @@ import InfoContainer from "@/shared/components/profile/InfoContainer/InfoContain
 import styles from "./styles.module.scss";
 import NewestApplicant from "@/shared/components/profile/NewestApplicant/NewestApplicant";
 import LaBelBelongContainer from "@/shared/components/profile/LabelBelongContainer/LaBelBelongContainer";
-import TrackContainer from "@/shared/components/profile/TrackContainer/TrackContainer";
 import { useQuery } from "@tanstack/react-query";
 import { useAuthStore } from "@/store/useAuthStore";
 import { getArtistProfile } from "@/service/profileService";
@@ -35,7 +34,6 @@ const Profile = () => {
           <LaBelBelongContainer dataInfo={data} />
         </div>
 
-        <TrackContainer />
       </div>
     </div>
   );
