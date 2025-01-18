@@ -9,7 +9,7 @@ export const getArtistProfile = async (token: string) => {
   return response.data.data;
 };
 
-export const getPrfileFileName = async (fileName: string, token: string): Promise<string> => {
+export const getProfileFileName = async (fileName: string, token: string): Promise<string> => {
   const response = await apiClient.get(`/image/${fileName}`, {
       responseType: 'blob',
       headers: { Authorization: `Bearer ${token}` } 
@@ -19,3 +19,14 @@ export const getPrfileFileName = async (fileName: string, token: string): Promis
   const url = URL.createObjectURL(blob);
   return url;
 }
+
+
+export const updateImageProfile = async (formData: FormData) => {
+  const response = await apiClient.patch('/artist/image', formData, {
+    headers: {
+      'Content-Type': 'multipart/form-data',
+    },
+  });
+
+  return response.data.data;
+};
