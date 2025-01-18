@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import {  columns } from "./columns";
 import { DataTable } from "./data-table";
 

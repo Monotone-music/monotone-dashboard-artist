@@ -28,8 +28,7 @@ const LabelCard: React.FC<LabelCardProps> = ({ onClick, labelName }) => {
   const isMobile = useMediaQuery("(max-width: 766px)");
   const {
     register,
-    handleSubmit,
-    formState: { errors },
+    handleSubmit
   } = useForm<ApplyLabelData>({ resolver: yupResolver(ApplyLabelSchema) });
 
   const onSubmit: SubmitHandler<ApplyLabelData> = (data) => {
@@ -78,10 +77,10 @@ const LabelCard: React.FC<LabelCardProps> = ({ onClick, labelName }) => {
                         label="Email"
                         placeholder="Enter your email"
                         register={register}
-                        error={errors?.email?.message}
+                        // error={errors?.email?.message}
                       />
 
-                      <Input id="resume" {...register("resume")} type="file" />
+                      <Input id="resume" {...register("file")} type="file" />
 
                       <Button type="submit" className="w-full mt-4">
                         Submit

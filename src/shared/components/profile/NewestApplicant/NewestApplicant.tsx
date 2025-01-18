@@ -1,4 +1,3 @@
-import React from 'react'
 import styles from './styles.module.scss'
 import TableData from '../../applicationStatus/page'
 import { useLabelRequests } from '@/hooks/useLabelRequests';
